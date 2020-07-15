@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
 		<title>Description</title>
-		<link rel="stylesheet" href="lib/github-markdown.css">
+		<link rel="stylesheet" href="github-markdown.css">
 		<style>
 			body {
 				box-sizing: border-box;
