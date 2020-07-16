@@ -1,6 +1,7 @@
 #pypi scraping library
 
 import os
+from platform import release
 import requests
 from bs4 import BeautifulSoup
 import webview
@@ -66,22 +67,48 @@ class Pypi_itempage:
         self.soup = BeautifulSoup(get_html(ADDRESS_PYPI + PROJECT + word), 'html.parser')
         self.xmlsoup = BeautifulSoup(get_html(ADDRESS_PYPI + 'rss/' + PROJECT + word + '/' + 'releases.xml'), "html.parser")
     def release_history(self):
+        version_history = []
         for version in self.xmlsoup.find_all('item'):
+            version_history.append(str(version.title.text))
             print(version.title.text)
+        return version_history
     def homepage_link(self):
         link = self.soup.find('a', class_='vertical-tabs__tab vertical-tabs__tab--with-icon vertical-tabs__tab--condensed').attrs['href']
         print(link)
     def webview_description(self):
-        #html = self.soup.find('div', id="description")
-        #webview.create_window(word, html=html)
-        html_data = get_html(ADDRESS_PYPI + PROJECT + word) 
-        print(html_data)
+        description = []
+        start_part = []
+        end_part = []
+        get_md = self.soup.find('div', id="description")
 
-       # webview.create_window(word, ADDRESS_PYPI + PROJECT + word)
-        
-       # webview.start()s
+        #base setting
+        start_f = open("lib/asset/html_start.txt", 'r').read()
+        end_f = open("lib/asset/html_end.txt", 'r').read()
+        for line in start_f:
+            start_part.append(line)
+        for line in end_f:
+            end_part.append(line)
+        f = open("lib/description.html", 'w')
+
+        #Assemble data
+        for i in range(0, len(start_part)):
+            description.append(start_part[i])
+        for md in get_md:
+            description.append(str(md))
+        for i in range(0, len(end_part)):
+            description.append(end_part[i])
+
+        #Write Html
+        for i in range(0, len(description)):
+            f.write(description[i])
+        f.close()
+
+        #open Webview
+        window = webview.create_window(word + ' ' + self.release_history()[0] , "description.html")
+        webview.start()
+
+
  #Debug
-
 if __name__ == "__main__":
     os.system("clear")
     print("Wellcome To Pypi \n\n\n\n\n")
