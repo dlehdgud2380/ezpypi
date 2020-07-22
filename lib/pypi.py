@@ -1,7 +1,7 @@
 #pypi scraping library
 
 import os
-from platform import release
+import platform
 import requests
 from bs4 import BeautifulSoup
 import webview
@@ -11,10 +11,17 @@ SEARCH = 'search/?q='
 PROJECT = 'project/'
 PAGE = '&page='
 
+def clear_term():
+    user_os = platform.system()
+    if user_os == 'Windows' :
+        os.system('cls')
+    else:
+        os.system('clear')
+
 #check server response
 def response_test(address):
     response = requests.get(address)
-    if response is not 200 :
+    if response != 200 :
         print ("Can't connect server")
         return response
     else :
@@ -28,17 +35,20 @@ def get_html(address):
 #parse pypi search result page
 class Pypi_listpage:
     def __init__(self, word):
-        self.soup = BeautifulSoup(get_html(ADDRESS_PYPI + SEARCH + word), 'html.parser')
+        if word == '':
+            print('Please type correct word!')
+        else:
+            self.soup = BeautifulSoup(get_html(ADDRESS_PYPI + SEARCH + word), 'html.parser')
 
-        #get package infos
-        self.name = self.soup.find_all('span', class_='package-snippet__name')
-        self.version = self.soup.find_all('span', class_='package-snippet__version')
-        self.released = self.soup.find_all('span', class_='package-snippet__released')
-        self.description = self.soup.find_all('p', class_='package-snippet__description')
+            #get package infos
+            self.name = self.soup.find_all('span', class_='package-snippet__name')
+            self.version = self.soup.find_all('span', class_='package-snippet__version')
+            self.released = self.soup.find_all('span', class_='package-snippet__released')
+            self.description = self.soup.find_all('p', class_='package-snippet__description')
 
-        #listed item -> self.package_list[0: name, 1: version, 2: released, 3: description][item_number]
-        self.package_list = [] 
-        self.__data_listing()
+            #listed item -> self.package_list[0: name, 1: version, 2: released, 3: description][item_number]
+            self.package_list = [] 
+            self.__data_listing()
 
     def __data_arrange(self, variable):
         arranged_data = [] 
@@ -64,6 +74,7 @@ class Pypi_listpage:
 #parse pypi single item page
 class Pypi_itempage:
     def __init__(self, word):
+        self.word = word
         self.soup = BeautifulSoup(get_html(ADDRESS_PYPI + PROJECT + word), 'html.parser')
         self.xmlsoup = BeautifulSoup(get_html(ADDRESS_PYPI + 'rss/' + PROJECT + word + '/' + 'releases.xml'), "html.parser")
     def release_history(self):
@@ -73,8 +84,11 @@ class Pypi_itempage:
             print(version.title.text)
         return version_history
     def homepage_link(self):
-        link = self.soup.find('a', class_='vertical-tabs__tab vertical-tabs__tab--with-icon vertical-tabs__tab--condensed').attrs['href']
-        print(link)
+        try:
+            link = self.soup.find('a', class_='vertical-tabs__tab vertical-tabs__tab--with-icon vertical-tabs__tab--condensed').attrs['href']
+            print(link)
+        except e:
+            print('Can`t found homepage link!')
     def webview_description(self):
         description = []
         start_part = []
@@ -104,20 +118,19 @@ class Pypi_itempage:
         f.close()
 
         #open Webview
-        window = webview.create_window(word + ' ' + self.release_history()[0] , "description.html")
+        window = webview.create_window(self.word + ' ' + self.release_history()[0] , "description.html")
         webview.start()
-
 
  #Debug
 if __name__ == "__main__":
-    os.system("clear")
+    clear_term()
     print("Wellcome To Pypi \n\n\n\n\n")
     word = input("Search Projects: ")
-    os.system("clear")
+    clear_term()
     a = Pypi_listpage(word)
     a.print_searchresult()
     select = input("select number: ")
-    os.system("clear")
+    clear_term()
     ab = Pypi_itempage(a.singleitem(int(select))[0])
     ab.release_history()
     ab.homepage_link()
