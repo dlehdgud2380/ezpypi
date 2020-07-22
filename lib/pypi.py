@@ -120,6 +120,8 @@ class Pypi_itempage:
         #open Webview
         window = webview.create_window(self.word + ' ' + self.release_history()[0] , "description.html")
         webview.start()
+        os.remove('lib/description.html')
+        
 
  #Debug
 if __name__ == "__main__":
