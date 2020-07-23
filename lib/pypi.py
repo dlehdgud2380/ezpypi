@@ -1,7 +1,6 @@
 #pypi scraping library
 
 import os
-import platform
 import requests
 from bs4 import BeautifulSoup
 import webview
@@ -10,13 +9,6 @@ ADDRESS_PYPI = 'https://pypi.org/'
 SEARCH = 'search/?q='
 PROJECT = 'project/'
 PAGE = '&page='
-
-def clear_term():
-    user_os = platform.system()
-    if user_os == 'Windows' :
-        os.system('cls')
-    else:
-        os.system('clear')
 
 #check server response
 def response_test(address):
@@ -121,19 +113,3 @@ class Pypi_itempage:
         window = webview.create_window(self.word + ' ' + self.release_history()[0] , "description.html")
         webview.start()
         os.remove('lib/description.html')
-        
-
- #Debug
-if __name__ == "__main__":
-    clear_term()
-    print("Wellcome To Pypi \n\n\n\n\n")
-    word = input("Search Projects: ")
-    clear_term()
-    a = Pypi_listpage(word)
-    a.print_searchresult()
-    select = input("select number: ")
-    clear_term()
-    ab = Pypi_itempage(a.singleitem(int(select))[0])
-    ab.release_history()
-    ab.homepage_link()
-    ab.webview_description()
