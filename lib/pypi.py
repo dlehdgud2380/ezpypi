@@ -11,13 +11,9 @@ PROJECT = 'project/'
 PAGE = '&page='
 
 #check server response
-def response_test(address):
-    response = requests.get(address)
-    if response != 200 :
-        print ("Can't connect server")
-        return response
-    else :
-        pass
+def response_status(address):
+    status_code = requests.get(address).status_code
+    return status_code
 
 #get html source
 def get_html(address):
@@ -54,8 +50,10 @@ class Pypi_listpage:
             self.__data_arrange(arrange_order[i])
 
     def print_searchresult(self):
+        result = []
         for i in range(0, len(self.package_list[0])):
-            print(str(i) + '. ' + self.package_list[0][i])
+            result.append(str(i) + '. %s(%s - %s)'%(self.package_list[0][i], self.package_list[1][i], self.package_list[2][i]))
+        return result
 
     def singleitem(self, itemnum):
         item_info = []
@@ -73,15 +71,15 @@ class Pypi_itempage:
         version_history = []
         for version in self.xmlsoup.find_all('item'):
             version_history.append(str(version.title.text))
-            print(version.title.text)
         return version_history
     def homepage_link(self):
         try:
             link = self.soup.find('a', class_='vertical-tabs__tab vertical-tabs__tab--with-icon vertical-tabs__tab--condensed').attrs['href']
-            print(link)
-        except e:
-            print('Can`t found homepage link!')
-    def webview_description(self):
+            return link
+        except:
+            return 'None'
+    
+    def get_markdown(self):
         description = []
         start_part = []
         end_part = []
@@ -109,6 +107,7 @@ class Pypi_itempage:
             f.write(description[i])
         f.close()
 
+    def webview_description(self):
         #open Webview
         window = webview.create_window(self.word + ' ' + self.release_history()[0] , "description.html")
         webview.start()

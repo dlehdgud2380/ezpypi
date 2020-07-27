@@ -30,10 +30,14 @@ class Pip:
                     break
         else:
             print('Can`t find pip! Please install pip!')
+            print('[Program exit]')
             sys.exit()
 
         print('Your pip path is %s' %self.pip_path)
-
+        
+    #print your pip path
+    def print_path(self):
+        return self.pip_path
 
     #install
     def install(self, word):
@@ -52,9 +56,10 @@ class Pip:
     #install using requirements.txt
     def multi_install(self, path):
         os.system('sudo %s install -r %s' %(self.pip_path, path))
-
+'''
     #Upgrade Package
     def upgrade(self):
         os.system('%s list' %self.pip_path)
         target = input('\nType package name for upgrade: ')
         os.system('sudo %s uninstall %s' %(self.pip_path, target))
+'''
