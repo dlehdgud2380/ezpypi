@@ -18,6 +18,7 @@ class Pip:
         elif user_os != 'Windows':
             list_temp = []
             temp = os.popen('ls ' + get_path +'/pip*')
+            print('[Found PIP path your computer]\n')
             for i, val in enumerate(temp):
                 list_temp.append(val)
                 print('%d. %s' %(i, val))
@@ -44,10 +45,8 @@ class Pip:
         os.system('sudo %s install %s' %(self.pip_path, word))
 
     #uninstall
-    def uninstall(self):
-        os.system('%s list' %self.pip_path)
-        target = input('\nType package name for uninstall: ')
-        os.system('sudo %s uninstall %s' %(self.pip_path, target))
+    def uninstall(self, word):
+        os.system('sudo %s uninstall %s' %(self.pip_path, word))
 
     #installed
     def list_installed(self):
@@ -56,6 +55,10 @@ class Pip:
     #install using requirements.txt
     def multi_install(self, path):
         os.system('sudo %s install -r %s' %(self.pip_path, path))
+
+    #requirements Export
+    def export_requirement(self):
+        os.system('sudo %s freeze > requirements.txt' %self.pip_path)
 '''
     #Upgrade Package
     def upgrade(self):
