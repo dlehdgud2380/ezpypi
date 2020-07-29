@@ -7,7 +7,7 @@ import time
 import sys
 
 #Program Starting
-tui.intro_display('0.1 Alpha')
+tui.intro_display('0.1 Beta 1')
 
 #Server Check
 tui.window_lid('pypi_server check')
