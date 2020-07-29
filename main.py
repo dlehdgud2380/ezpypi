@@ -69,6 +69,7 @@ project_homepage: %s
                         select_work = input('[1] Watch Description, [2] Release history, [3] Install [4] Back to Search result\nnum: ')
                         if select_work == '1':
                             itempage.webview_description()
+                            
                         elif select_work == '2':
                             tui.window_lid('%s - Version History' %package_name)
                             for i in itempage.release_history():

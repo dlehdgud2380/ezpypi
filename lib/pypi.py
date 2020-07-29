@@ -67,6 +67,7 @@ class Pypi_itempage:
         self.word = word
         self.soup = BeautifulSoup(get_html(ADDRESS_PYPI + PROJECT + word), 'html.parser')
         self.xmlsoup = BeautifulSoup(get_html(ADDRESS_PYPI + 'rss/' + PROJECT + word + '/' + 'releases.xml'), "html.parser")
+
     def release_history(self):
         version_history = []
         for version in self.xmlsoup.find_all('item'):
@@ -109,6 +110,6 @@ class Pypi_itempage:
 
     def webview_description(self):
         #open Webview
-        window = webview.create_window(self.word + ' ' + self.release_history()[0] , "description.html")
+        webview.create_window(self.word + ' ' + self.release_history()[0] , 'lib/description.html')
         webview.start()
         os.remove('lib/description.html')
