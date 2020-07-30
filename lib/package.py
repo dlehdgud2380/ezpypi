@@ -40,13 +40,20 @@ class Pip:
     def print_path(self):
         return self.pip_path
 
+    #Administor
+    def sudo(self):
+        if user_os != 'Windows':
+            return 'sudo'
+        else:
+            return ''
+
     #install
     def install(self, word):
-        os.system('sudo %s install %s' %(self.pip_path, word))
+        os.system('%s %s install %s' %(self.sudo(), self.pip_path, word))
 
     #uninstall
     def uninstall(self, word):
-        os.system('sudo %s uninstall %s' %(self.pip_path, word))
+        os.system('%s %s uninstall %s' %(self.sudo(), self.pip_path, word))
 
     #installed
     def list_installed(self):
@@ -54,11 +61,11 @@ class Pip:
 
     #install using requirements.txt
     def multi_install(self, path):
-        os.system('sudo %s install -r %s' %(self.pip_path, path))
+        os.system('%s %s install -r %s' %(self.sudo(), self.pip_path, path))
 
     #requirements Export
     def export_requirement(self):
-        os.system('sudo %s freeze > requirements.txt' %self.pip_path)
+        os.system('%s %s freeze > requirements.txt' %(self.sudo(), self.pip_path))
 '''
     #Upgrade Package
     def upgrade(self):
