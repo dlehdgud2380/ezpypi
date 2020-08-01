@@ -112,7 +112,7 @@ project_homepage: %s
             back = input('\n[Type ENTER key for back to main menu]')
     elif select == '4':
         tui.window_lid('Package Remove')
-        pip.list_installed()
+        pip.list_installed(1)
         word = input('\n[Type package name for remove or Type ENTER key for back to main menu]\n Package Name: ')
         if word == '':
             continue
