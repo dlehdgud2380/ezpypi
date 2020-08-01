@@ -9,9 +9,6 @@ import os
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 #Program Starting
-<<<<<<< HEAD
-tui.intro_display('0.1 Beta 1')
-=======
 tui.intro_display()
 
 #get pippath
@@ -25,7 +22,6 @@ pip.check_essential_module()
 time.sleep(1)
 
 import lib.pypi as pypi
->>>>>>> f52e2f315da69e7222f28a17f2e6f6569fd72100
 
 #Server Check
 tui.window_lid('pypi_server check')
