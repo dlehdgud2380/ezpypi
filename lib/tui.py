@@ -4,7 +4,7 @@ import os
 import platform
 import time
 
-app_version = '0.1 Alpha Build 20200801'
+app_version = '0.1 Alpha Build 20200802'
 
 def term_clear():
     user_os = platform.system()

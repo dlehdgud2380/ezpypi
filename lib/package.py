@@ -110,9 +110,9 @@ class Pip:
 
     #installed
     def list_installed(self, mode):
-        if mode == '1':
+        if int(mode) == 1:
             os.system('%s list' %self.pip_path)
-        elif mode == '2':
+        elif int(mode) == 2:
             return self.package_list
 
     #install using requirements.txt
