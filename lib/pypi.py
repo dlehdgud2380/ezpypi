@@ -28,7 +28,7 @@ class Pypi_listpage:
         else:
             self.soup = BeautifulSoup(get_html(ADDRESS_PYPI + SEARCH + word), 'html.parser')
 
-            #get package infos
+            #get package info
             self.name = self.soup.find_all('span', class_='package-snippet__name')
             self.version = self.soup.find_all('span', class_='package-snippet__version')
             self.released = self.soup.find_all('span', class_='package-snippet__released')
