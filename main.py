@@ -1,13 +1,27 @@
 #pypi.org package manager program by sc0nep
 
-import lib.pypi as pypi
 import lib.package as package
 import lib.tui as tui
 import time
 import sys
+import os
+
+os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 #Program Starting
-tui.intro_display('0.1 Alpha')
+tui.intro_display()
+
+#get pippath
+tui.window_lid('Get pip path')
+pip = package.Pip()
+pip.get_path()
+
+#check essential module
+tui.window_lid('Check essential module')
+pip.check_essential_module()
+time.sleep(1)
+
+import lib.pypi as pypi
 
 #Server Check
 tui.window_lid('pypi_server check')
@@ -20,11 +34,6 @@ else:
     print('ErrorCode: %s' %http_code)
     print('[Program exit]')
     sys.exit()
-
-#get pippath
-tui.window_lid('Get pip path')
-pip = package.Pip()
-pip.get_path()
 
 #MainMenu
 while(True):
@@ -69,7 +78,6 @@ project_homepage: %s
                         select_work = input('[1] Watch Description, [2] Release history, [3] Install [4] Back to Search result\nnum: ')
                         if select_work == '1':
                             itempage.webview_description()
-                            
                         elif select_work == '2':
                             tui.window_lid('%s - Version History' %package_name)
                             for i in itempage.release_history():
@@ -88,7 +96,7 @@ project_homepage: %s
                     time.sleep(0.5)
     elif select == '2':
         tui.window_lid('Direct Installation')
-        word = input('[Type Package Name or Type ENTER key back to main menu]\n Package Name: ')
+        word = input('[Type Package Name or Type ENTER key for back to main menu]\n Package Name: ')
         if word == '':
             continue
         else:
@@ -96,7 +104,7 @@ project_homepage: %s
             back = input('\n[Type ENTER key for back to main menu]')
     elif select == '3':
         tui.window_lid('Install using requirements.txt')
-        word = input('[Type requirements.txt or Type ENTER key back to main menu]\n Path: ')
+        word = input('[Type requirements.txt Path or Type ENTER key for back to main menu]\n Path: ')
         if word == '':
             continue
         else:
@@ -105,7 +113,7 @@ project_homepage: %s
     elif select == '4':
         tui.window_lid('Package Remove')
         pip.list_installed()
-        word = input('\n[Type package name for remove or Type ENTER key back to main menu]\n Package Name: ')
+        word = input('\n[Type package name for remove or Type ENTER key for back to main menu]\n Package Name: ')
         if word == '':
             continue
         else:
@@ -113,7 +121,16 @@ project_homepage: %s
             tui.autoback()
     elif select == '5':
         tui.window_lid('Installed Package List')
-        pip.list_installed()
+        select = input('1. Print list with Version \n2. Print list only name\n\n[number + Enter] print package list, [Enter] Back to Main menu\n input: ')
+        if select == '1':
+            tui.window_lid('Installed Package List - With version')
+            pip.list_installed(select)
+        elif select == '2':
+            tui.window_lid('Installed Package List - Only Name')
+            for i in pip.list_installed(select):
+                print(i)
+        else:
+            continue
         back = input('\n[Type ENTER key for back to main menu]')
     elif select == '6':
         tui.window_lid('export requirements.txt')

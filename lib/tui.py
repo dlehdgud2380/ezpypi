@@ -4,6 +4,8 @@ import os
 import platform
 import time
 
+app_version = '0.1 Alpha Build 20200801'
+
 def term_clear():
     user_os = platform.system()
     if user_os == 'Windows' :
@@ -15,7 +17,10 @@ def autoback():
     print('\n[Will back in 3 sec.]')
     time.sleep(3)
 
-def intro_display(version):
+def version():
+    return app_version
+
+def intro_display():
     term_clear()
     text = '''
             ______  __   __ ______   _____
@@ -23,19 +28,20 @@ def intro_display(version):
   ___  ____ | |_/ /  \ V /  | |_/ /   | |
  / _ \|_  / |  __/    \ /   |  __/    | |
 |  __/ / /  | |       | |   | |      _| |_
- \___|/___| \_|       \_/   \_|      \___/ %s
-<--Easy to use on Any OS-->
-''' %version
+ \___|/___| \_|       \_/   \_|      \___/
+<-- Easy to use on Any OS -->
+--------------------------------------------
+Version: %s
+''' %version()
     print(text)
     time.sleep(2)
 
 def window_lid(process):
     term_clear()
     text_lid = '''
-                                           ezPYPI 0.1 Alpha
------------------------------------------------------------
+-------------------------------------------------------------------
  %s
------------------------------------------------------------''' %process
+-------------------------------------------------------------------''' %(process)
     print(text_lid)
 
 def programinfo():
@@ -45,17 +51,18 @@ def programinfo():
   ___  ____ | |_/ /  \ V /  | |_/ /   | |
  / _ \|_  / |  __/    \ /   |  __/    | |
 |  __/ / /  | |       | |   | |      _| |_
- \___|/___| \_|       \_/   \_|      \___/ 0.1 Alpha
+ \___|/___| \_|       \_/   \_|      \___/
  <--Easy to use on Any OS-->
 
-----------------------------------------------------------
+Version: %s
+------------------------------------------------------------------
 [Developer Info]
 
 Name: LeeDongHyeong
 mail: sc0_nep@yahoo.co.jp
 Github: https://github.com/dlehdgud2380
 
-BUG REPORT PLEASE!! '''
+BUG REPORT PLEASE!! ''' %version()
     print(info)
 
 def main_menu():
