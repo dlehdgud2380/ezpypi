@@ -4,6 +4,8 @@ import os
 import sys
 import platform
 import re
+import lib.tui as tui
+import time
 
 user_os = platform.system()
 get_path = os.path.dirname(sys.executable)
@@ -64,41 +66,45 @@ class Pip:
 
     #check essential module for this program
     def check_essential_module(self):
+        tui.window_lid('Check essential module')
+        print('Essential Moudle Checking... ',end='')
         p = re.compile('[a-zA-Z0-9 -]+')
-        ESSENTAIL_MODULE = ['requests', 'beautifulsoup4', 'pywebview']
+        ESSENTAIL_MODULE = ['requests', 'bs4', 'pywebview']
         modulecheck = ['N', 'N', 'N']
         freeze = os.popen('%s %s freeze' %(self.sudo(), self.pip_path))
         for i in freeze:
-            temp = p.findall(i)[0]
-            self.package_list.append(temp)
-            if temp == ESSENTAIL_MODULE[0]:
-                modulecheck[0] = 'Y'
-            elif temp == ESSENTAIL_MODULE[1]:
-                modulecheck[1] = 'Y'
-            elif temp == ESSENTAIL_MODULE[2]:
-                modulecheck[2] = 'Y'
-            else:
-                continue
-        print('[Essential Module Status]\n')
-        for i in range(0, len(ESSENTAIL_MODULE)):
-            print('%s : %s' %(ESSENTAIL_MODULE[i], modulecheck[i]))
-        #install essential modules
-        while(True):
-            if modulecheck[0] == 'N':
-                print('\nInstall requests module\n')
-                self.install('essential/requests-2.24.0-py2.py3-none-any.whl')
-                modulecheck[0] = 'Y'
-            elif modulecheck[1] == 'N':
-                print('\nInstall beautifulsoup4 module\n')
-                self.install('essential/beautifulsoup4-4.9.1-py3-none-any.whl')
-                modulecheck[1] = 'Y'
-            elif modulecheck[2] == 'N':
-                print('\nInstall pywebview module\n')
-                self.install('essential/pywebview-3.3.2-py3-none-any.whl')
-                modulecheck[2] = 'Y'
-            else:
-                print('\nEssential Modules are ready!')
-                break
+            self.package_list.append(str.strip(p.findall(i)[0]))
+        if ESSENTAIL_MODULE[0] in self.package_list:
+            modulecheck[0] = 'Y'
+        if ESSENTAIL_MODULE[1] in self.package_list:
+            modulecheck[1] = 'Y'
+        if ESSENTAIL_MODULE[2] in self.package_list:
+            modulecheck[2] = 'Y'
+        if modulecheck[0] == 'N' or modulecheck[1] == 'N' or modulecheck[2] == 'N':
+            print('\n[Essential Module Status]\n')
+            for i in range(0, len(ESSENTAIL_MODULE)):
+                print('%s : %s' %(ESSENTAIL_MODULE[i], modulecheck[i]))
+            #install essential modules
+            while(True):
+                if modulecheck[0] == 'N':
+                    print('\nInstall requests module\n')
+                    self.install('essential/requests-2.24.0-py2.py3-none-any.whl')
+                    modulecheck[0] = 'Y'
+                elif modulecheck[1] == 'N':
+                    print('\nInstall beautifulsoup4 module\n')
+                    self.install('essential/bs4-0.0.1.tar.gz')
+                    modulecheck[1] = 'Y'
+                elif modulecheck[2] == 'N':
+                    print('\nInstall pywebview module\n')
+                    self.install('essential/pywebview-3.3.2-py3-none-any.whl')
+                    modulecheck[2] = 'Y'
+                else:
+                    print('\nEssential Modules are ready!')
+                    break
+            time.sleep(1)
+        else:
+            print('OK')
+            pass
 
     #install
     def install(self, word):
@@ -127,5 +133,5 @@ class Pip:
     def upgrade(self):
         os.system('%s list' %self.pip_path)
         target = input('\nType package name for upgrade: ')
-        os.system('sudo %s uninstall %s' %(self.pip_path, target))
+        os.system('%s %s install --upgrade %s' %(self.sudo(), self.pip_path, word))
 '''
