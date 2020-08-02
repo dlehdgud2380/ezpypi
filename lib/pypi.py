@@ -4,21 +4,21 @@ import os
 import requests
 from bs4 import BeautifulSoup
 import webview
+import sys
+import io
+
+sys.stdout = io.TextIOWrapper(sys.stdout.detach(), encoding = 'utf-8')
+sys.stderr = io.TextIOWrapper(sys.stderr.detach(), encoding = 'utf-8')
 
 ADDRESS_PYPI = 'https://pypi.org/'
 SEARCH = 'search/?q='
 PROJECT = 'project/'
 PAGE = '&page='
 
-#check server response
-def response_status(address):
-    status_code = requests.get(address).status_code
-    return status_code
-
-#get html source
-def get_html(address):
-    html = requests.get(address).text
-    return html
+#check server and get html source
+def server_response(address):
+    response = requests.get(address, timeout=3)
+    return response
 
 #parse pypi search result page
 class Pypi_listpage:
@@ -26,8 +26,8 @@ class Pypi_listpage:
         if word == '':
             print('Please type correct word!')
         else:
-            self.soup = BeautifulSoup(get_html(ADDRESS_PYPI + SEARCH + word), 'html.parser')
-
+            response = server_response(ADDRESS_PYPI + SEARCH + word)
+            self.soup = BeautifulSoup(response.text, 'html.parser')
             #get package info
             self.name = self.soup.find_all('span', class_='package-snippet__name')
             self.version = self.soup.find_all('span', class_='package-snippet__version')
@@ -65,8 +65,8 @@ class Pypi_listpage:
 class Pypi_itempage:
     def __init__(self, word):
         self.word = word
-        self.soup = BeautifulSoup(get_html(ADDRESS_PYPI + PROJECT + word), 'html.parser')
-        self.xmlsoup = BeautifulSoup(get_html(ADDRESS_PYPI + 'rss/' + PROJECT + word + '/' + 'releases.xml'), "html.parser")
+        self.soup = BeautifulSoup(server_response(ADDRESS_PYPI + PROJECT + word).text, 'html.parser')
+        self.xmlsoup = BeautifulSoup(server_response(ADDRESS_PYPI + 'rss/' + PROJECT + word + '/' + 'releases.xml').text, "html.parser")
 
     def release_history(self):
         version_history = []
@@ -93,7 +93,7 @@ class Pypi_itempage:
             start_part.append(line)
         for line in end_f:
             end_part.append(line)
-        f = open("lib/description.html", 'w')
+        f = open("lib/description.html", 'w', -1, 'utf-8')
 
         #Assemble data
         for i in range(0, len(start_part)):
@@ -111,5 +111,5 @@ class Pypi_itempage:
     def webview_description(self):
         #open Webview
         webview.create_window(self.word + ' ' + self.release_history()[0] , 'lib/description.html')
-        webview.start()
-        os.remove('lib/description.html')
+        webview.start(http_server=True)
+        #os.remove('lib/description.html')
