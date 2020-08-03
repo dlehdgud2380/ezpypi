@@ -13,7 +13,7 @@ INTROTEXT = '''            ______  __   __ ______   _____
  \___|/___| \_|       \_/   \_|      \___/
 <-- Easy to use on Any OS -->
 '''
-APP_VERSION = '0.1 Beta 2'
+APP_VERSION = '0.1 Beta 3'
 
 def term_clear():
     user_os = platform.system()

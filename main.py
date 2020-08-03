@@ -96,7 +96,6 @@ project_homepage: %s
                             else:
                                 break
                     elif item_select == '':
-                        os.remove('lib/description.html')
                         break
                     else:
                         print('Please type correct number!')
