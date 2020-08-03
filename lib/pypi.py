@@ -4,6 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 import webview
 import platform
+import os
 
 user_os = platform.system()
 ADDRESS_PYPI = 'https://pypi.org/'
@@ -105,9 +106,18 @@ class Pypi_itempage:
         f.close()
 
     def webview_description(self):
+        def destrory(window):
+            question = input('[Type ENTER key to webview close]\n')
+            if question != '':
+                pass
+            else:
+                pass
+            print('Webview Closing...')
+            os.remove('lib/description.html')
+            window.destroy()
         print('Webview Loading...')
-        webview.create_window(self.word + ' ' + self.release_history()[0], 'lib/description.html')
+        window = webview.create_window(self.word + ' ' + self.release_history()[0], 'lib/description.html', frameless=True)
         if user_os == 'Windows':
-            webview.start(http_server = True)
+            webview.start(destrory, window, http_server = True, debug=False)
         else:
-            webview.start()
+            webview.start(destrory, window)
