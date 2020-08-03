@@ -1,15 +1,11 @@
 #pypi scraping library
 
-import os
 import requests
 from bs4 import BeautifulSoup
 import webview
-import sys
-import io
+import platform
 
-sys.stdout = io.TextIOWrapper(sys.stdout.detach(), encoding = 'utf-8')
-sys.stderr = io.TextIOWrapper(sys.stderr.detach(), encoding = 'utf-8')
-
+user_os = platform.system()
 ADDRESS_PYPI = 'https://pypi.org/'
 SEARCH = 'search/?q='
 PROJECT = 'project/'
@@ -109,7 +105,9 @@ class Pypi_itempage:
         f.close()
 
     def webview_description(self):
-        #open Webview
-        webview.create_window(self.word + ' ' + self.release_history()[0] , 'lib/description.html')
-        webview.start(http_server=True)
-        #os.remove('lib/description.html')
+        print('Webview Loading...')
+        webview.create_window(self.word + ' ' + self.release_history()[0], 'lib/description.html')
+        if user_os == 'Windows':
+            webview.start(http_server = True)
+        else:
+            webview.start()

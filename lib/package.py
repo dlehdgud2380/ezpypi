@@ -27,12 +27,15 @@ class Pip:
                 list_temp.append(val)
                 print('%d. %s' %(i, val))
             while(True):
-                select = int(input('Select pip: '))
-                if select > len(list_temp)-1 or select < 0 :
-                    print('You type wrong number!')
-                else:
-                    self.pip_path = list_temp[select].strip()
-                    break
+                select = input('Select pip: ')
+                try:
+                    if int(select) > len(list_temp)-1 or int(select) < 0 :
+                        print('You type wrong number!\n')
+                    else:
+                        self.pip_path = list_temp[int(select)].strip()
+                        break
+                except:
+                    print('You type wrong value!\n')
         else:
             print('Can`t find pip! Please install pip or change python path!')
             print('[Program exit]')
