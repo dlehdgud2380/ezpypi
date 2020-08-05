@@ -1,5 +1,5 @@
 # ezPYPI
-**Very simple and easy to use pip on any os**
+**Very simple and easy to use PIP, PYPI on any os**
 * Can get more detail package with PYPI.
 * Can use pip easily
 
@@ -21,7 +21,7 @@
 2. Execute **ezpypi.exe**
 
 You don`t need install using 'requirements.txt'.
-### macOS, Linux
+### macOS, Linux User
 1. Download and extract '**ezpypi_0.1-linux_mac.zip**'
 2. Please install using **pip3 install -r 'requirements.txt'**
 3. python3 main.py
@@ -33,25 +33,33 @@ You don`t need install using 'requirements.txt'.
 3. And enjoy!
 
 ## Future
-**1. PYPI Search - Get package detail info and install.**
+**1. PYPI Search**
+> Get package detail info and install.
 
 | Search Result | Project Description |
 | -------- | -------- |
 | ![](https://i.imgur.com/8qKdyO5.png)  | ![](https://i.imgur.com/IUarKff.png) |
 
-**2. Direct installation - pip install 'package_name'**
-[You can type that want another version.]
+**2. Direct installation**
+> pip install 'package_name'
+
 ![](https://i.imgur.com/AxGmlF5.png)
-**3. Install using requirements.txt - Type 'requirements.txt' path.**
+**3. Install using requirements.txt**
+> Type 'requirements.txt' path.
+
 ![](https://i.imgur.com/69rdJTE.png)
-**4. Package Remove - pip uninstall 'package_name'**
+**4. Package Remove**
+>pip uninstall 'package_name'
+
 ![](https://i.imgur.com/Jg00Xep.png)
-**5. Installed Package List - Print package list**
+**5. Installed Package List**
+>Print package list
+
 | pip list | only package name |
 | -------- | -------- |
 | ![](https://i.imgur.com/uIBBOTi.png)     | ![](https://i.imgur.com/m3SmC3E.png)    |
-**6. export requirements.txt - pip freeze > 'requirements.txt'**
-
+**6. export requirements.txt**
+> pip freeze > 'requirements.txt'
 
 | 1. freezing | 2. File Generated | 3. requirements.txt |
 | -------- | -------- | -------- |
