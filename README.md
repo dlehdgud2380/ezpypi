@@ -3,8 +3,9 @@
 * Can get more detail package with PYPI.
 * Can use pip easily
 
-
 ![](https://i.imgur.com/0OldkHS.png)
+![](https://i.imgur.com/hJtkYKy.png)
+
 ## Requirements
 * Only working **Python 3**, will not work Python 2.
 * Must need **pip**.
