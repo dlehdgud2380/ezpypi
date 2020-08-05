@@ -21,7 +21,7 @@
 2. Execute **ezpypi.exe**
 
 You don`t need install using 'requirements.txt'.
-### macOS, Linux User
+### macOS, Linux
 1. Download and extract '**ezpypi_0.1-linux_mac.zip**'
 2. Please install using **pip3 install -r 'requirements.txt'**
 3. python3 main.py
