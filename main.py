@@ -1,4 +1,4 @@
-#pypi.org package manager program by sc0nep
+# pypi.org package manager program by sc0nep
 
 import lib.tui as tui
 import lib.package as package
@@ -8,37 +8,34 @@ import os
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
-#Program Starting
+# Program Starting
 tui.intro_display()
 
-#get pippath
+# get pippath
 tui.window_lid('Get pip path')
 pip = package.Pip()
 pip.get_path()
 
-#check essential module
-pip.check_essential_module()
-
 try:
-    urllib.request.urlopen('https://pypi.org/', timeout=3)
+    urllib.request.urlopen('https://pypi.org', timeout=3)
     import lib.pypi as pypi
     mode = 'Online'
-except Exception:
+except urllib.error.URLError:
     mode = 'Offline'
 
-#MainMenu
+# MainMenu
 while(True):
     tui.window_lid('MAIN MENU')
-    #pip_path, PYPI Server status
-    print('\nPIP_path: %s' %pip.print_path())
+    # pip_path, PYPI Server status
+    print('\nPIP_path: %s' % pip.print_path())
     if mode == 'Offline':
-        print('PYPI Server Status: %s - You can`t use PYPI Search\n' %mode)
+        print('PYPI Server Status: %s - You can`t use PYPI Search\n' % mode)
     else:
         pypi_status = pypi.server_response('https://pypi.org/').status_code
         if pypi_status == 200:
-            print('PYPI Server Status:  %s / %s\n' %(mode, pypi_status))
+            print('PYPI Server Status:  %s / %s\n' % (mode, pypi_status))
         else:
-            print('PYPI Server Status: %s / %s - You can`t use PYPI Search%s\n' %(mode, pypi_status))
+            print('PYPI Server Status: %s / %s - You can`t use PYPI Search\n' % (mode, pypi_status))
     tui.main_menu()
     select = input('\nType Number: ')
     if select == '1':
@@ -62,7 +59,7 @@ while(True):
                     item_select = input('\n[number + Enter] package info, [Enter] Back to Main menu \n Input: ')
                     if item_select != '':
                         while(True):
-                            #package info
+                            # package info
                             singleitem = listpage.singleitem(int(item_select))
                             package_name = singleitem[0]
                             package_version = singleitem[1]
@@ -79,21 +76,22 @@ version: %s
 released: %s
 subtitle: %s
 project_homepage: %s
-    ''' %(package_name, package_version, package_released, package_subtitle, package_homepage)
+    ''' % (package_name, package_version, package_released, package_subtitle, package_homepage)
                             print(info)
                             select_work = input('[1] Watch Description, [2] Release history, [3] Install, [Blank + ENTER] Back to Search result\nnum: ')
                             if select_work == '1':
                                 itempage.webview_description()
                             elif select_work == '2':
-                                tui.window_lid('%s - Version History' %package_name)
+                                tui.window_lid('%s - Version History' % package_name)
                                 for i in itempage.release_history():
                                     print(i)
                                 back = input('\n[Type ENTER key for back to package info]')
                             elif select_work == '3':
-                                tui.window_lid('Install ''%s'' package' %package_name)
+                                tui.window_lid('Install ''%s'' package' % package_name)
                                 pip.install(package_name)
                                 back = input('\n[Type ENTER key for back to package info]')
                             else:
+                                os.remove('description.html')
                                 break
                     elif item_select == '':
                         break
