@@ -44,20 +44,24 @@ You don`t need install using 'requirements.txt'.
 > pip install 'package_name'
 
 ![](https://i.imgur.com/AxGmlF5.png)
+
 **3. Install using requirements.txt**
 > Type 'requirements.txt' path.
 
 ![](https://i.imgur.com/69rdJTE.png)
+
 **4. Package Remove**
 >pip uninstall 'package_name'
 
 ![](https://i.imgur.com/Jg00Xep.png)
+
 **5. Installed Package List**
 >Print package list
 
 | pip list | only package name |
 | -------- | -------- |
 | ![](https://i.imgur.com/uIBBOTi.png)     | ![](https://i.imgur.com/m3SmC3E.png)    |
+
 **6. export requirements.txt**
 > pip freeze > 'requirements.txt'
 
