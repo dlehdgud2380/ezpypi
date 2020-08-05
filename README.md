@@ -31,7 +31,6 @@ You don`t need install using 'requirements.txt'.
 2. If path is not true, type 'N' and input correct **pip path** and Y.
 ![](https://i.imgur.com/AL5dfi4.png)
 3. And enjoy!
-![](https://i.imgur.com/0OldkHS.png)
 
 ## Future
 **1. PYPI Search - Get package detail info and install.**
