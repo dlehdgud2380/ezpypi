@@ -1,7 +1,8 @@
 # ezPYPI
 **Very simple and easy to use PIP, PYPI on any os**
 * Can get more detail package with PYPI.
-* Can use pip easily
+* Can use pip easily.
+* Can use offline!
 
 | macOS |
 | -------- |
