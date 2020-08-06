@@ -1,5 +1,6 @@
 # ezPYPI
 [![Release](https://img.shields.io/github/v/release/dlehdgud2380/ezpypi?include_prereleases)](https://github.com/dlehdgud2380/AbbrtoOriginal/ezpypi)
+[![License](https://img.shields.io/github/license/dlehdgud2380/ezpypi)](https://github.com/dlehdgud2380/ezpypi/blob/master/LICENSE)
 
 **Very simple and easy to use PIP, PYPI on any os**
 * Can get more detail info from PYPI.
