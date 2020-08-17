@@ -1,23 +1,28 @@
-#pypi scraping library
+# pypi scraping library
 
 import requests
 from bs4 import BeautifulSoup
-import webview
 import platform
-import os
+import sys
+import lib.webview as webview
 
 user_os = platform.system()
+app = webview.QApplication(sys.argv)
 ADDRESS_PYPI = 'https://pypi.org/'
 SEARCH = 'search/?q='
 PROJECT = 'project/'
 PAGE = '&page='
 
-#check server and get html source
+# check server and get html source
+
+
 def server_response(address):
     response = requests.get(address, timeout=3)
     return response
 
-#parse pypi search result page
+# parse pypi search result page
+
+
 class Pypi_listpage:
     def __init__(self, word):
         if word == '':
@@ -25,13 +30,13 @@ class Pypi_listpage:
         else:
             response = server_response(ADDRESS_PYPI + SEARCH + word)
             self.soup = BeautifulSoup(response.text, 'html.parser')
-            #get package info
+            # get package info
             self.name = self.soup.find_all('span', class_='package-snippet__name')
             self.version = self.soup.find_all('span', class_='package-snippet__version')
             self.released = self.soup.find_all('span', class_='package-snippet__released')
             self.description = self.soup.find_all('p', class_='package-snippet__description')
 
-            #listed item -> self.package_list[0: name, 1: version, 2: released, 3: description][item_number]
+            # listed item -> self.package_list[0: name, 1: version, 2: released, 3: description][item_number]
             self.package_list = [] 
             self.__data_listing()
 
@@ -49,7 +54,7 @@ class Pypi_listpage:
     def print_searchresult(self):
         result = []
         for i in range(0, len(self.package_list[0])):
-            result.append(str(i) + '. %s(%s - %s)'%(self.package_list[0][i], self.package_list[1][i], self.package_list[2][i]))
+            result.append(str(i) + '. %s(%s - %s)'% (self.package_list[0][i], self.package_list[1][i], self.package_list[2][i]))
         return result
 
     def singleitem(self, itemnum):
@@ -58,7 +63,9 @@ class Pypi_listpage:
             item_info.append(self.package_list[i][itemnum])
         return item_info
 
-#parse pypi single item page
+# parse pypi single item page
+
+
 class Pypi_itempage:
     def __init__(self, word):
         self.word = word
@@ -70,29 +77,30 @@ class Pypi_itempage:
         for version in self.xmlsoup.find_all('item'):
             version_history.append(str(version.title.text))
         return version_history
+
     def homepage_link(self):
         try:
             link = self.soup.find('a', class_='vertical-tabs__tab vertical-tabs__tab--with-icon vertical-tabs__tab--condensed').attrs['href']
             return link
         except:
             return 'None'
-    
+
     def get_markdown(self):
         description = []
         start_part = []
         end_part = []
         get_md = self.soup.find('div', id="description")
 
-        #base setting
-        start_f = open("lib/asset/html_start.txt", 'r').read()
-        end_f = open("lib/asset/html_end.txt", 'r').read()
+        # base setting
+        start_f = open("asset/html_start.txt", 'r').read()
+        end_f = open("asset/html_end.txt", 'r').read()
         for line in start_f:
             start_part.append(line)
         for line in end_f:
             end_part.append(line)
-        f = open("lib/description.html", 'w', -1, 'utf-8')
+        f = open("description.html", 'w', -1, 'utf-8')
 
-        #Assemble data
+        # Assemble data
         for i in range(0, len(start_part)):
             description.append(start_part[i])
         for md in get_md:
@@ -100,24 +108,13 @@ class Pypi_itempage:
         for i in range(0, len(end_part)):
             description.append(end_part[i])
 
-        #Write Html
+        # Write Html
         for i in range(0, len(description)):
             f.write(description[i])
         f.close()
 
     def webview_description(self):
-        def destrory(window):
-            question = input('[Type ENTER key to webview close]\n')
-            if question != '':
-                pass
-            else:
-                pass
-            print('Webview Closing...')
-            os.remove('lib/description.html')
-            window.destroy()
-        print('Webview Loading...')
-        window = webview.create_window(self.word + ' ' + self.release_history()[0], 'lib/description.html', frameless=True)
-        if user_os == 'Windows':
-            webview.start(destrory, window, http_server = True, debug=False)
-        else:
-            webview.start(destrory, window)
+        print('Webview Running...')
+        form = webview.Form('%s %s' % (self.word,  self.release_history()[0]))
+        form.show()
+        app.exec_()

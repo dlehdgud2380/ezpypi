@@ -1,4 +1,4 @@
-#pypi.org package manager program by sc0nep
+# pypi.org package manager program by sc0nep
 
 import lib.tui as tui
 import lib.package as package
@@ -8,37 +8,34 @@ import os
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
-#Program Starting
+# Program Starting
 tui.intro_display()
 
-#get pippath
+# get pippath
 tui.window_lid('Get pip path')
 pip = package.Pip()
 pip.get_path()
 
-#check essential module
-pip.check_essential_module()
-
 try:
-    urllib.request.urlopen('https://pypi.org/', timeout=3)
+    urllib.request.urlopen('https://pypi.org', timeout=3)
     import lib.pypi as pypi
     mode = 'Online'
-except Exception:
+except urllib.error.URLError:
     mode = 'Offline'
 
-#MainMenu
+# MainMenu
 while(True):
     tui.window_lid('MAIN MENU')
-    #pip_path, PYPI Server status
-    print('\nPIP_path: %s' %pip.print_path())
+    # pip_path, PYPI Server status
+    print('\nPIP_path: %s' % pip.print_path())
     if mode == 'Offline':
-        print('PYPI Server Status: %s - You can`t use PYPI Search\n' %mode)
+        print('PYPI Server Status: %s - You can`t use PYPI Search\n' % mode)
     else:
         pypi_status = pypi.server_response('https://pypi.org/').status_code
         if pypi_status == 200:
-            print('PYPI Server Status:  %s / %s\n' %(mode, pypi_status))
+            print('PYPI Server Status:  %s / %s\n' % (mode, pypi_status))
         else:
-            print('PYPI Server Status: %s / %s - You can`t use PYPI Search%s\n' %(mode, pypi_status))
+            print('PYPI Server Status: %s / %s - You can`t use PYPI Search\n' % (mode, pypi_status))
     tui.main_menu()
     select = input('\nType Number: ')
     if select == '1':
@@ -62,7 +59,7 @@ while(True):
                     item_select = input('\n[number + Enter] package info, [Enter] Back to Main menu \n Input: ')
                     if item_select != '':
                         while(True):
-                            #package info
+                            # package info
                             singleitem = listpage.singleitem(int(item_select))
                             package_name = singleitem[0]
                             package_version = singleitem[1]
@@ -79,21 +76,39 @@ version: %s
 released: %s
 subtitle: %s
 project_homepage: %s
-    ''' %(package_name, package_version, package_released, package_subtitle, package_homepage)
+    ''' % (package_name, package_version, package_released, package_subtitle, package_homepage)
                             print(info)
                             select_work = input('[1] Watch Description, [2] Release history, [3] Install, [Blank + ENTER] Back to Search result\nnum: ')
                             if select_work == '1':
                                 itempage.webview_description()
                             elif select_work == '2':
-                                tui.window_lid('%s - Version History' %package_name)
+                                tui.window_lid('%s - Version History' % package_name)
                                 for i in itempage.release_history():
                                     print(i)
                                 back = input('\n[Type ENTER key for back to package info]')
                             elif select_work == '3':
-                                tui.window_lid('Install ''%s'' package' %package_name)
-                                pip.install(package_name)
-                                back = input('\n[Type ENTER key for back to package info]')
+                                while True:
+                                    tui.window_lid('Install ''%s'' package' % package_name)
+                                    for i, v in enumerate(itempage.release_history()):
+                                        if i == 0 :
+                                            print('%d. %s -- latest' %(i, v))
+                                        else:
+                                            print('%d. %s' %(i, v))
+                                    try:
+                                        select = input('\nPlease select number to install version. Or type [Enter] to back to menu.\n Num: ')
+                                    except:
+                                        print('Please input correct value.')
+                                    if select == '':
+                                        break
+                                    elif int(select) > len(itempage.release_history()):
+                                        print('Please input correct number.')
+                                        tui.term_clear()
+                                    else:
+                                        pip.install(package_name + '==%s' %itempage.release_history()[int(select)])
+                                        back = input('\n[Type ENTER key for back to package info]')
+                                        break
                             else:
+                                os.remove('description.html')
                                 break
                     elif item_select == '':
                         break
@@ -102,12 +117,12 @@ project_homepage: %s
                         time.sleep(0.5)
     elif select == '2':
         tui.window_lid('Direct Installation')
-        word = input('[Type Package Name or Type ENTER key for back to main menu]\n Package Name: ')
+        word = input('Type Package Name or Type [ENTER] key for back to main menu.\nIf you want install multi package --> ex. bs4 requests flask\n Package Name: ')
         if word == '':
             continue
         else:
             pip.install(word)
-            back = input('\n[Type ENTER key for back to main menu]')
+            back = input('\nType [ENTER] key for back to main menu')
     elif select == '3':
         tui.window_lid('Install using requirements.txt')
         word = input('[Type requirements.txt Path or Type ENTER key for back to main menu]\n Path: ')
@@ -115,7 +130,7 @@ project_homepage: %s
             continue
         else:
             pip.multi_install(word)
-            back = input('\n[Type ENTER key for back to main menu]')
+            back = input('\nType [ENTER] key for back to main menu')
     elif select == '4':
         tui.window_lid('Package Remove')
         pip.list_installed(1)
@@ -137,20 +152,22 @@ project_homepage: %s
                 print(i)
         else:
             continue
-        back = input('\n[Type ENTER key for back to main menu]')
+        back = input('\nType [ENTER] key for back to main menu')
     elif select == '6':
         tui.window_lid('export requirements.txt')
         print('exporting...\n')
         pip.export_requirement()
         time.sleep(0.3)
         print('\nSaved ezpypi/requirements.txt')
-        back = input('\n[Type ENTER key for back to main menu]')
+        back = input('\nType [ENTER] key for back to main menu')
     elif select == '0':
         break
     elif select == '7':
         tui.window_lid('ezPYPI Info')
         tui.programinfo()
-        back = input('\n[Type ENTER key for back to main menu]')
+        back = input('\nType [ENTER] key for back to main menu')
+    elif select == '8':
+        tui.window_lid('ez_PYPI Update')
     else:
         print('Please type correct number!')
         time.sleep(0.5)
