@@ -60,6 +60,6 @@ BUG REPORT PLEASE!! ''' % (INTROTEXT, version())
 
 
 def main_menu():
-    menu = ['1. PYPI Search', '2. Direct installation', '3. Install using requirements.txt', '4. Package Remove', '5. Installed Package List', '6. export reqirements.txt', '7. ezPYPI Info', '8. ez_PYPI Update', '0. Exit']
+    menu = ['(1) PYPI Search', '(2) Direct installation', '(3) Install using requirements.txt', '(4) Package Remove', '(5) Installed Package List', '(6) export reqirements.txt', '(7) ezPYPI Info', '(8) ez_PYPI Update', '(0) Exit']
     for i in menu: 
         print(i)

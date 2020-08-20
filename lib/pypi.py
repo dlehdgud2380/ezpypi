@@ -54,7 +54,7 @@ class Pypi_listpage:
     def print_searchresult(self):
         result = []
         for i in range(0, len(self.package_list[0])):
-            result.append(str(i) + '. %s(%s - %s)'% (self.package_list[0][i], self.package_list[1][i], self.package_list[2][i]))
+            result.append('(%s) %s(%s - %s)'% (str(i), self.package_list[0][i], self.package_list[1][i], self.package_list[2][i]))
         return result
 
     def singleitem(self, itemnum):

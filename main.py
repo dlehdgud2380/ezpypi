@@ -1,5 +1,6 @@
 # pypi.org package manager program by sc0nep
 
+import lib.updater as updater
 import lib.tui as tui
 import lib.package as package
 import time
@@ -125,7 +126,7 @@ project_homepage: %s
             back = input('\nType [ENTER] key for back to main menu')
     elif select == '3':
         tui.window_lid('Install using requirements.txt')
-        word = input('[Type requirements.txt Path or Type ENTER key for back to main menu]\n Path: ')
+        word = input('Type requirements.txt Path or Type [ENTER] key for back to main menu\n Path: ')
         if word == '':
             continue
         else:
@@ -134,7 +135,7 @@ project_homepage: %s
     elif select == '4':
         tui.window_lid('Package Remove')
         pip.list_installed(1)
-        word = input('\n[Type package name for remove or Type ENTER key for back to main menu]\n Package Name: ')
+        word = input('\nType package name for remove or Type [ENTER] key for back to main menu\n Package Name: ')
         if word == '':
             continue
         else:
@@ -168,6 +169,20 @@ project_homepage: %s
         back = input('\nType [ENTER] key for back to main menu')
     elif select == '8':
         tui.window_lid('ez_PYPI Update')
+        checker = updater.Update_checker()
+        if checker.version_compare() == 1 :
+            select = input('\nDo you want update? (Y/N) --> ')
+            if select == 'y' :
+                print('\n')
+                update_data = checker.get_downloadinfo()
+                print(update_data[1])
+                updater.updater(update_data[1], update_data[0])
+                print('\nUpdate Finished... Please restart Program.')
+                back = input('\nType [ENTER] key for exit program.')
+                break
+        else:
+            back = input('\nType [ENTER] key for back to main menu')
+            continue
     else:
         print('Please type correct number!')
         time.sleep(0.5)
